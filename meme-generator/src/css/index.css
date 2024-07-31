@@ -1,0 +1,10 @@
+body {
+  font-family: "Karla", sans-serif;
+}
+
+[class*="__container"] {
+  max-width: 550px;
+  margin: 0 auto;
+  padding-left: 35px;
+  padding-right: 35px;
+}

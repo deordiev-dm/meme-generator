@@ -3,17 +3,20 @@ import "../css/components/MainContent.css";
 import memesData from "../js/memeData";
 
 function Form() {
-  const memes = memesData.data.memes;
+  const [allMemeImages, setAllMemeImages] = useState(memesData.data.memes);
+  const [meme, setMeme] = useState({
+    topText: "",
+    bottomText: "",
+    imgUrl: chooseRandomMemeUrl(),
+  });
 
-  const [memeUrl, setMemeUrl] = useState(chooseRandomMeme());
-
-  function chooseRandomMeme() {
-    const randomIndex = Math.floor(Math.random() * memes.length);
-    return memes[randomIndex].url;
+  function chooseRandomMemeUrl() {
+    const randomIndex = Math.floor(Math.random() * allMemeImages.length);
+    return allMemeImages[randomIndex].url;
   }
 
   function changeMeme() {
-    setMemeUrl(chooseRandomMeme());
+    setMeme((prevState) => ({ ...prevState, imgUrl: chooseRandomMemeUrl() }));
   }
 
   return (
@@ -44,7 +47,7 @@ function Form() {
           </button>
         </form>
         <div className="meme-image">
-          <img src={memeUrl} alt="meme image" />
+          <img src={meme.imgUrl} alt="meme image" />
         </div>
       </div>
     </main>

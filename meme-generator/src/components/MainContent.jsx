@@ -1,22 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../css/components/MainContent.css";
-import memesData from "../js/memeData";
 
 function Form() {
-  const [allMemeImages, setAllMemeImages] = useState(memesData.data.memes);
+  const [allMemes, setAllMemes] = useState([]);
   const [meme, setMeme] = useState({
     topText: "",
     bottomText: "",
-    imgUrl: chooseRandomMemeUrl(),
+    imgUrl: "",
   });
 
-  function chooseRandomMemeUrl() {
-    const randomIndex = Math.floor(Math.random() * allMemeImages.length);
-    return allMemeImages[randomIndex].url;
+  function chooseRandomArrItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
 
+  useEffect(() => {
+    fetch("https://api.imgflip.com/get_memes")
+      .then((response) => response.json())
+      .then((data) => {
+        const memes = data.data.memes;
+        setAllMemes(data.data.memes);
+
+        if (memes.length) {
+          setMeme((prevMeme) => ({ ...prevMeme, imgUrl: chooseRandomArrItem(memes).url }));
+        }
+      });
+  }, []);
+
   function changeMeme() {
-    setMeme((prevMeme) => ({ ...prevMeme, imgUrl: chooseRandomMemeUrl() }));
+    setMeme((prevMeme) => ({ ...prevMeme, imgUrl: chooseRandomArrItem(allMemes).url }));
   }
 
   function handleInputChange(event) {
@@ -26,8 +37,6 @@ function Form() {
       [name]: value,
     }));
   }
-
-  console.log(meme);
 
   return (
     <main className="main">

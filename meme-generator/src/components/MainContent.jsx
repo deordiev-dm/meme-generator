@@ -16,8 +16,18 @@ function Form() {
   }
 
   function changeMeme() {
-    setMeme((prevState) => ({ ...prevState, imgUrl: chooseRandomMemeUrl() }));
+    setMeme((prevMeme) => ({ ...prevMeme, imgUrl: chooseRandomMemeUrl() }));
   }
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    return setMeme((prevMeme) => ({
+      ...prevMeme,
+      [name]: value,
+    }));
+  }
+
+  console.log(meme);
 
   return (
     <main className="main">
@@ -28,7 +38,15 @@ function Form() {
               <label htmlFor="top-text" className="form__label">
                 Top text
               </label>
-              <input type="text" placeholder="Shut up" id="top-text" className="form__input" />
+              <input
+                type="text"
+                placeholder="Shut up"
+                id="top-text"
+                name="topText"
+                className="form__input"
+                onChange={handleInputChange}
+                value={meme.topText}
+              />
             </div>
             <div className="form__column">
               <label htmlFor="bottom-text" className="form__label">
@@ -38,7 +56,10 @@ function Form() {
                 type="text"
                 placeholder="And take my money"
                 id="bottom-text"
+                name="bottomText"
                 className="form__input"
+                onChange={handleInputChange}
+                value={meme.bottomText}
               />
             </div>
           </div>
@@ -46,8 +67,10 @@ function Form() {
             Get a new meme image 🖼
           </button>
         </form>
-        <div className="meme-image">
-          <img src={meme.imgUrl} alt="meme image" />
+        <div className="meme">
+          <p className="meme__text meme__text--top">{meme.topText}</p>
+          <p className="meme__text meme__text--bottom">{meme.bottomText}</p>
+          <img src={meme.imgUrl} alt="meme image" className="meme__image" />
         </div>
       </div>
     </main>
